@@ -15,8 +15,9 @@ show_en = st.sidebar.checkbox("Mostrar Inglés (EN)", value=True)
 show_zh = st.sidebar.checkbox("Mostrar Chino (中)", value=True)
 show_py = st.sidebar.checkbox("Mostrar Pinyin (PY)", value=True)
 expand_all = st.sidebar.checkbox("🔓 Expandir todos los bloques", value=False)
+show_full_text = st.sidebar.checkbox("📖 Show full text", value=False)
 
-bloques = [
+topics = [
     ("🌍 Why regeneration?",
      "Around the world, nature is being destroyed.",
      "在世界各地，大自然正在被破坏。",
@@ -113,25 +114,43 @@ bloques = [
      "Wǒ xiǎng zuò Zhōngguó hé Zhìlì zhī jiān de “qiáo”, yīqǐ jiànshè gèng hǎo de wèilái."),
 ]
 
-# Group and display blocks
-from collections import defaultdict
-bloques_por_titulo = defaultdict(list)
+
+# Group blocks by section
+topics_by_title = defaultdict(list)
 current_title = "⮞ Other"
 
-for titulo, en, zh, py in bloques:
-    if titulo:
-        current_title = titulo
-    bloques_por_titulo[current_title].append((en, zh, py))
+for title, en, zh, py in topics:
+    if title:
+        current_title = title
+    topics_by_title[current_title].append((en, zh, py))
 
-for titulo, items in bloques_por_titulo.items():
-    with st.expander(titulo, expanded=expand_all):
-        for en, zh, py in items:
-            if show_en:
-                st.markdown(f"**EN:** {en}")
-            if show_zh:
-                st.markdown(f"**中:** {zh}")
-            if show_py:
-                st.markdown(f"**PY:** *{py}*")
-            st.markdown("---")
+# Build full text by language with better formatting
+full_text_by_lang = {"EN": [], "中": [], "PY": []}
+for _, items in topics_by_title.items():
+    full_text_by_lang["EN"].append("\n\n".join(en for en, _, _ in items))
+    full_text_by_lang["中"].append("\n\n".join(zh for _, zh, _ in items))
+    full_text_by_lang["PY"].append("\n\n".join(py for _, _, py in items))
 
-
+# Display full text or fragmented view
+if show_full_text:
+    st.subheader("📖 Full text")
+    if show_en:
+        st.markdown("**EN**")
+        st.markdown("\n\n".join(full_text_by_lang["EN"]))
+    if show_zh:
+        st.markdown("**中**")
+        st.markdown("\n\n".join(full_text_by_lang["中"]))
+    if show_py:
+        st.markdown("**PY**")
+        st.markdown("*" + "\n\n".join(full_text_by_lang["PY"]) + "*")
+else:
+    for title, items in topics_by_title.items():
+        with st.expander(title, expanded=expand_all):
+            for en, zh, py in items:
+                if show_en:
+                    st.markdown(f"**EN:** {en}")
+                if show_zh:
+                    st.markdown(f"**中:** {zh}")
+                if show_py:
+                    st.markdown(f"**PY:** *{py}*")
+                st.markdown("---")
