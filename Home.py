@@ -21,7 +21,7 @@ lang_option = st.sidebar.radio("Select language display", (
     "Only 中文"
 ))
 
-st.title("Personal learning companion")
+st.title("Francis 林高天 — Following the Pulse of Regeneration 跟随再生的脉动")
 
 
 # Text blocks (modular design)
