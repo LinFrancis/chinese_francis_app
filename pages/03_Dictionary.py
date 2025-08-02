@@ -4,7 +4,15 @@ import re
 import uuid
 
 
-st.set_page_config(page_title="林高天 Journey", layout="wide")
+st.set_page_config(
+    page_title="林高天 Journey",
+    layout="wide",
+    initial_sidebar_state="expanded"  # 👈 this keeps the sidebar open
+    page_icon="🌱"
+)
+
+
+
 st.title("Chinese Words Dictionary")
 
 from sidebar_header import render_sidebar_header

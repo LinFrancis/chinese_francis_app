@@ -2,20 +2,36 @@
 import streamlit as st
 from collections import defaultdict
 
-st.set_page_config(page_title="林高天 Journey", layout="wide")
+st.set_page_config(
+    page_title="林高天 Journey",
+    layout="wide",
+    initial_sidebar_state="expanded"  # 👈 this keeps the sidebar open
+    page_icon="🌱"
+)
+
 from sidebar_header import render_sidebar_header
 render_sidebar_header()
-
-
-st.title("Key messages in Chinese and English")
-# Display settings
-
 
 show_en = st.sidebar.checkbox("Mostrar Inglés (EN)", value=True)
 show_zh = st.sidebar.checkbox("Mostrar Chino (中)", value=True)
 show_py = st.sidebar.checkbox("Mostrar Pinyin (PY)", value=True)
 expand_all = st.sidebar.checkbox("🔓 Expandir todos los bloques", value=False)
 show_full_text = st.sidebar.checkbox("📖 Show full text", value=False)
+
+
+st.title("Key messages in Chinese and English")
+# Display settings
+
+# Optional MP3 playback for full Chinese narration
+with st.expander("🎧 Listen to full text in Chinese"):
+    audio_path = "audio_francis.mp3"  # ensure this file is in the root or public path
+    try:
+        audio_file = open(audio_path, "rb")
+        st.audio(audio_file.read(), format="audio/mp3")
+    except FileNotFoundError:
+        st.warning("Audio file not found. Please upload or regenerate it.")
+
+
 
 topics = [
     ("🌍 Why regeneration?",
@@ -154,3 +170,5 @@ else:
                 if show_py:
                     st.markdown(f"**PY:** *{py}*")
                 st.markdown("---")
+
+
