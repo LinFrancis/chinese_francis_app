@@ -1,11 +1,14 @@
 import streamlit as st
 
-st.set_page_config(page_title="林高天 Journey", layout="wide")
+st.set_page_config(
+    page_title="林高天 Journey",
+    layout="wide",
+    initial_sidebar_state="expanded"  # 👈 this keeps the sidebar open
+)
 
 from sidebar_header import render_sidebar_header
 render_sidebar_header()
 
-st.title("Personal learning companion")
 
 # Sidebar language selection
 lang_option = st.sidebar.radio("Select language display", (
@@ -16,11 +19,14 @@ lang_option = st.sidebar.radio("Select language display", (
     "Only 中文"
 ))
 
+st.title("Personal learning companion")
+
+
 # Text blocks (modular design)
 content_blocks = [
     {
         "title": "Purpose",
-        "en": "This is my personal Chinese learning space. The goal is to reach HSK 3 level by 2026 — through practice, reflection, and consistent vocabulary review.",
+        "en": "This Francis 林高天 personal Chinese learning space. The goal is to reach HSK 3 level by 2026 — through practice, reflection, and consistent vocabulary review.",
         "zh": "这是我个人学习中文的空间。我的目标是在2026年之前达到HSK三级水平 —— 通过练习、反思和持续的词汇复习来实现。",
         "py": "Zhè shì wǒ gèrén xuéxí Zhōngwén de kōngjiān. Wǒ de mùbiāo shì zài 2026 nián zhīqián dádào HSK sān jí shuǐpíng — tōngguò liànxí, fǎnsī hé chíxù de cíhuì fùxí lái shíxiàn."
     },
